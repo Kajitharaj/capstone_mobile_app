@@ -1,4 +1,4 @@
-import 'package:capstone_mobile_app/features/auth/domain/model/user_model.dart';
+import 'package:capstone_mobile_app/features/auth/domain/models/user_model.dart';
 
 class UserResponseModel extends UserModel {
   final String token;

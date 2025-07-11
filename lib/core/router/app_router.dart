@@ -2,7 +2,7 @@ import 'package:capstone_mobile_app/core/constants/route_constants.dart';
 import 'package:capstone_mobile_app/features/auth/presentation/pages/login_view.dart';
 import 'package:capstone_mobile_app/features/auth/presentation/pages/registration_view.dart';
 import 'package:capstone_mobile_app/features/auth/presentation/pages/splash_view.dart';
-import 'package:capstone_mobile_app/features/home/presentation/home_view.dart';
+import 'package:capstone_mobile_app/features/home/presentation/pages/home_view.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter appRouter = GoRouter(

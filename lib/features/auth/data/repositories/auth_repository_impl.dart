@@ -1,8 +1,8 @@
 import 'package:capstone_mobile_app/core/services/secure_storage_service.dart';
 import 'package:capstone_mobile_app/core/shared/error/failure.dart';
-import 'package:capstone_mobile_app/features/auth/data/data_sources/auth_service.dart';
-import 'package:capstone_mobile_app/features/auth/domain/model/user_model.dart';
-import 'package:capstone_mobile_app/features/auth/domain/model/user_response_model.dart';
+import 'package:capstone_mobile_app/features/auth/data/datasources/auth_service.dart';
+import 'package:capstone_mobile_app/features/auth/domain/models/user_model.dart';
+import 'package:capstone_mobile_app/features/auth/domain/models/user_response_model.dart';
 import 'package:capstone_mobile_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:dartz/dartz.dart';
 
@@ -18,8 +18,8 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<Either<Failure, bool>> login(String email, String password) async {
     try {
-      final json = await authService.login(email, password);
-      final user = UserResponseModel.fromJson(json.data);
+      final respone = await authService.login(email, password);
+      final user = UserResponseModel.fromJson(respone.data);
       if (user.email.isNotEmpty) {
         localDataSource.saveToken(user.token);
         return Right(true);
@@ -36,8 +36,8 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<Either<Failure, UserModel?>> getCurrentUser() async {
     try {
-      final json = await authService.getCurrentUser();
-      return Right(UserModel.fromJson(json.data));
+      final response = await authService.getCurrentUser();
+      return Right(UserModel.fromJson(response.data));
     } catch (e) {
       return Left(Failure(exception: e));
     }
@@ -46,8 +46,8 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<Either<Failure, bool>> checkAuthStatus() async {
     try {
-      final json = await authService.getCurrentUser();
-      final user = UserModel.fromJson(json.data);
+      final response = await authService.getCurrentUser();
+      final user = UserModel.fromJson(response.data);
       if (user.email.isNotEmpty) {
         return Right(true);
       } else {

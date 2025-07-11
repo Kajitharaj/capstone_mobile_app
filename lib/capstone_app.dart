@@ -7,6 +7,7 @@ import 'package:capstone_mobile_app/features/auth/domain/usecases/get_user_useca
 import 'package:capstone_mobile_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:capstone_mobile_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:capstone_mobile_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:capstone_mobile_app/features/home/presentation/bloc/bloc/movie_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -22,8 +23,11 @@ class CapstoneApp extends StatelessWidget {
       theme: appTheme,
       builder: (context, child) {
         NavigatorHelper().setParentContext(context);
-        return BlocProvider(
-          create: (context) => sl<AuthBloc>(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>()),
+            BlocProvider<MovieBloc>(create: (_) => sl<MovieBloc>()),
+          ],
           child: Material(
             child: ProgressHUD(child: Container(child: child)),
           ),
