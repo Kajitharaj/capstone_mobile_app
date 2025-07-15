@@ -25,4 +25,18 @@ class MovieRepositoryImpl extends MovieRepository {
       return Left(Failure(exception: e, message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> addToWishList(MovieModel movie) async {
+    try {
+      final response = await movieService.addWishList(movie);
+      if (response.success) {
+        return Right(true);
+      } else {
+        return Right(false);
+      }
+    } catch (e) {
+      return Left((Failure(exception: e, message: e.toString())));
+    }
+  }
 }

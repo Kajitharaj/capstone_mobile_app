@@ -10,14 +10,20 @@ class MovieTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: BoxBorder.all(color: AppColors.primaryContainer),
+        color: AppColors.background,
+        border: BoxBorder.all(color: AppColors.background),
+        borderRadius: BorderRadius.circular(16.0),
       ),
       child: Column(
         children: [
-          Image.network(
-            height: 260,
-            fit: BoxFit.fitWidth,
-            "https://image.tmdb.org/t/p/w500/${movie.posterPath}",
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadiusGeometry.circular(16.0),
+              child: Image.network(
+                fit: BoxFit.fitWidth,
+                "https://image.tmdb.org/t/p/w500/${movie.posterPath}",
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),

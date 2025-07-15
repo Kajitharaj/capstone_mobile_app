@@ -8,7 +8,7 @@ class PageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         child: child,
       ),
     );

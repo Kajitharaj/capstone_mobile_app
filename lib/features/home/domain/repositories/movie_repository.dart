@@ -4,4 +4,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class MovieRepository {
   Future<Either<Failure, List<MovieModel>>> fetchMovies();
+  Future<Either<Failure, bool>> addToWishList(MovieModel movie);
 }

@@ -31,16 +31,7 @@ class ApiClient {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body) as Map<String, dynamic>;
       } else {
-        String? errorMessage;
-        if (response.body.isNotEmpty) {
-          errorMessage =
-              (jsonDecode(response.body)
-                  as Map<String, dynamic>)['data']['message'];
-        }
-        throw ServerException(
-          errorCode: '${response.statusCode}:',
-          error: errorMessage,
-        );
+        return throwError(response);
       }
     } catch (e) {
       rethrow;
@@ -55,7 +46,7 @@ class ApiClient {
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as Map<String, dynamic>;
       } else {
-        throw Exception('Failed GET request: ${response.statusCode}');
+        return throwError(response);
       }
     } catch (e) {
       rethrow;
@@ -77,10 +68,71 @@ class ApiClient {
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as Map<String, dynamic>;
       } else {
-        throw Exception('Failed GET request: ${response.statusCode}');
+        return throwError(response);
       }
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<Map<String, dynamic>> authPost(
+    String path,
+    Map<String, dynamic> body,
+  ) async {
+    final token = await authLocalDataSource.getToken();
+    final url = Uri.parse('$baseUrl$path');
+    try {
+      final response = await httpClient.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        return throwError(response);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> authDelete(String path) async {
+    final token = await authLocalDataSource.getToken();
+    final url = Uri.parse('$baseUrl$path');
+    try {
+      final response = await httpClient.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        return throwError(response);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  throwError(http.Response response) {
+    String? errorMessage;
+    if (response.body.isNotEmpty) {
+      errorMessage =
+          (jsonDecode(response.body)
+              as Map<String, dynamic>)['data']['message'];
+    }
+    throw ServerException(
+      errorCode: '${response.statusCode}:',
+      error: errorMessage,
+    );
   }
 }

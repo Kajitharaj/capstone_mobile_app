@@ -8,10 +8,17 @@ import 'package:capstone_mobile_app/features/auth/domain/usecases/get_user_useca
 import 'package:capstone_mobile_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:capstone_mobile_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:capstone_mobile_app/features/home/data/datasources/movie_service.dart';
+import 'package:capstone_mobile_app/features/home/data/datasources/wishlist_service.dart';
 import 'package:capstone_mobile_app/features/home/data/repositories/movie_repository_impl.dart';
+import 'package:capstone_mobile_app/features/home/data/repositories/wishlist_repository_impl.dart';
 import 'package:capstone_mobile_app/features/home/domain/repositories/movie_repository.dart';
+import 'package:capstone_mobile_app/features/home/domain/repositories/wishlist_repository.dart';
+import 'package:capstone_mobile_app/features/home/domain/usecases/add_to_wish_list_usecase.dart';
+import 'package:capstone_mobile_app/features/home/domain/usecases/delete_wish_list_usecase.dart';
 import 'package:capstone_mobile_app/features/home/domain/usecases/fetch_movies_usecase.dart';
-import 'package:capstone_mobile_app/features/home/presentation/bloc/bloc/movie_bloc.dart';
+import 'package:capstone_mobile_app/features/home/domain/usecases/get_wish_list_usecase.dart';
+import 'package:capstone_mobile_app/features/home/presentation/bloc/fav_bloc/bloc/fav_bloc.dart';
+import 'package:capstone_mobile_app/features/home/presentation/bloc/home_bloc/movie_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -37,6 +44,9 @@ Future<void> init() async {
   // Data sources
   sl.registerLazySingleton<AuthService>(() => AuthService(apiClient: sl()));
   sl.registerLazySingleton<MovieService>(() => MovieService(apiClient: sl()));
+  sl.registerLazySingleton<WishListService>(
+    () => WishListService(apiClient: sl()),
+  );
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(
@@ -45,13 +55,19 @@ Future<void> init() async {
   sl.registerLazySingleton<MovieRepository>(
     () => MovieRepositoryImpl(movieService: sl()),
   );
+  sl.registerLazySingleton<WishlistRepository>(
+    () => WishlistRepositoryImpl(wishListService: sl()),
+  );
 
   // Use cases
   sl.registerLazySingleton(() => LoginUseCase(sl()));
   sl.registerLazySingleton(() => LogoutUseCase(sl()));
   sl.registerLazySingleton(() => GetCurrentUserUseCase(sl()));
   sl.registerLazySingleton(() => CheckAuthStatusUseCase(sl()));
-  sl.registerLazySingleton(() => FetchMoviesUsecase(repository: sl()));
+  sl.registerLazySingleton(() => FetchMoviesUsecase(sl()));
+  sl.registerLazySingleton(() => AddToWishListUsecase(sl()));
+  sl.registerLazySingleton(() => GetWishListUsecase(sl()));
+  sl.registerLazySingleton(() => DeleteWishListUsecase(sl()));
 
   // Bloc
   sl.registerFactory(
@@ -62,5 +78,10 @@ Future<void> init() async {
       checkAuthStatusUseCase: sl(),
     ),
   );
-  sl.registerFactory(() => MovieBloc(fetchMoviesUsecase: sl()));
+  sl.registerFactory(
+    () => HomeBloc(fetchMoviesUsecase: sl(), addToWishListUsecase: sl()),
+  );
+  sl.registerFactory(
+    () => FavBloc(deleteWishListUsecase: sl(), getWishListUsecase: sl()),
+  );
 }

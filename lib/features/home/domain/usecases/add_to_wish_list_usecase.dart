@@ -3,12 +3,12 @@ import 'package:capstone_mobile_app/features/home/domain/model/movie_model.dart'
 import 'package:capstone_mobile_app/features/home/domain/repositories/movie_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class FetchMoviesUsecase {
+class AddToWishListUsecase {
   final MovieRepository repository;
 
-  FetchMoviesUsecase(this.repository);
+  const AddToWishListUsecase(this.repository);
 
-  Future<Either<Failure, List<MovieModel>>> call() async {
-    return await repository.fetchMovies();
+  Future<Either<Failure, bool>> call(MovieModel movie) {
+    return repository.addToWishList(movie);
   }
 }

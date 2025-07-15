@@ -1,48 +1,51 @@
-import 'package:capstone_mobile_app/core/shared/enum/snackbar_enum.dart';
-import 'package:capstone_mobile_app/core/util/navigator_helper.dart';
-import 'package:capstone_mobile_app/core/widgets/page_container.dart';
-import 'package:capstone_mobile_app/features/home/presentation/bloc/bloc/movie_bloc.dart';
-import 'package:capstone_mobile_app/features/home/presentation/widgets/movie_tile_widget.dart';
+import 'package:capstone_mobile_app/core/constants/app_colors.dart';
+import 'package:capstone_mobile_app/core/constants/route_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class HomeView extends StatefulWidget {
+  final Widget child;
+  const HomeView({super.key, required this.child});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  int _currentIndex = 0;
+
+  changeTab(int index) {
+    switch (index) {
+      case 0:
+        context.go(RouteConstants.HOME);
+        break;
+      case 1:
+        context.go(RouteConstants.FAVOURITES);
+        break;
+      default:
+        context.go(RouteConstants.HOME);
+        break;
+    }
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PageContainer(
-      child: Center(
-        child: BlocConsumer<MovieBloc, MovieState>(
-          listener: (BuildContext context, MovieState state) {
-            if (state is MovieError) {
-              NavigatorHelper().showSnackBar(
-                message: state.failure.message ?? '',
-                type: SnackBarType.error,
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state is MovieInitial) {
-              context.read<MovieBloc>().add(FetchMovies());
-            }
-            if (state is MovieLoading) return CircularProgressIndicator();
-            if (state is MovieLoaded) {
-              return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
-                  childAspectRatio: 3 / 5,
-                ),
-                itemCount: state.moviesList.length,
-                itemBuilder: (context, index) {
-                  return MovieTile(movie: state.moviesList[index]);
-                },
-              );
-            }
-            return SizedBox.shrink();
-          },
-        ),
+    return Scaffold(
+      backgroundColor: AppColors.primaryContainer,
+      body: widget.child,
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: changeTab,
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.movie), label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favourites',
+          ),
+        ],
       ),
     );
   }
