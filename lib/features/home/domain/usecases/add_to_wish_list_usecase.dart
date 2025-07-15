@@ -1,10 +1,10 @@
 import 'package:capstone_mobile_app/core/shared/error/failure.dart';
 import 'package:capstone_mobile_app/features/home/domain/model/movie_model.dart';
-import 'package:capstone_mobile_app/features/home/domain/repositories/movie_repository.dart';
+import 'package:capstone_mobile_app/features/home/domain/repositories/wishlist_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class AddToWishListUsecase {
-  final MovieRepository repository;
+  final WishlistRepository repository;
 
   const AddToWishListUsecase(this.repository);
 

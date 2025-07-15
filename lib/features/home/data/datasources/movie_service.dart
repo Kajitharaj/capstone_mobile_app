@@ -1,6 +1,5 @@
 import 'package:capstone_mobile_app/core/services/http_api_client.dart';
 import 'package:capstone_mobile_app/core/shared/model/api_response_model.dart';
-import 'package:capstone_mobile_app/features/home/domain/model/movie_model.dart';
 
 class MovieService {
   final ApiClient apiClient;
@@ -22,14 +21,16 @@ class MovieService {
     }
   }
 
-  Future<ApiResponseModel> addWishList(MovieModel movie) async {
+  Future<ApiResponseModel> getMovieDetail(int? id) async {
     try {
-      final json = await apiClient.authPost(
-        '/wishlists/addWishList',
-        movie.toJson(),
-      );
+      final json = await apiClient.authGet('/movies/movie?movieId=$id');
       final response = ApiResponseModel.fromJson(json);
-      return response;
+      if (response.success) {
+        return response;
+      } else {
+        final errorMessage = response.error ?? 'Unknown error';
+        throw Exception(errorMessage);
+      }
     } catch (e) {
       rethrow;
     }

@@ -6,5 +6,6 @@ class RouteConstants {
   static final REGISTER = '/register';
   static final HOME = '/home';
   static final MOVIES = '/movies';
-  static final FAVOURITES = '/favourites';
+  static final WISHLIST = '/wishList';
+  static final MOVIE_DETAIL = '/movie';
 }

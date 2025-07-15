@@ -21,6 +21,7 @@ dependencies:
   json_annotation: ^4.9.0
   dartz: ^0.10.1
   flutter_secure_storage: ^9.2.4
+  palette_generator: ^0.3.3+7
 
 
 dev_dependencies:

@@ -127,8 +127,7 @@ class ApiClient {
     String? errorMessage;
     if (response.body.isNotEmpty) {
       errorMessage =
-          (jsonDecode(response.body)
-              as Map<String, dynamic>)['data']['message'];
+          (jsonDecode(response.body) as Map<String, dynamic>)['error'];
     }
     throw ServerException(
       errorCode: '${response.statusCode}:',

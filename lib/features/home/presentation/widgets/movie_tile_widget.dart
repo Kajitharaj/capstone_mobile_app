@@ -20,6 +20,14 @@ class MovieTile extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadiusGeometry.circular(16.0),
               child: Image.network(
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress?.cumulativeBytesLoaded ==
+                      loadingProgress?.expectedTotalBytes) {
+                    return child;
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
                 fit: BoxFit.fitWidth,
                 "https://image.tmdb.org/t/p/w500/${movie.posterPath}",
               ),

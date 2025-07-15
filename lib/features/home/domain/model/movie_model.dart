@@ -72,3 +72,4 @@ class MovieModel {
     "vote_count": voteCount,
   };
 }
+

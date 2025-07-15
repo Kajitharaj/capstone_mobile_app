@@ -20,7 +20,7 @@ class _HomeViewState extends State<HomeView> {
         context.go(RouteConstants.HOME);
         break;
       case 1:
-        context.go(RouteConstants.FAVOURITES);
+        context.go(RouteConstants.WISHLIST);
         break;
       default:
         context.go(RouteConstants.HOME);
@@ -43,7 +43,7 @@ class _HomeViewState extends State<HomeView> {
           BottomNavigationBarItem(icon: Icon(Icons.movie), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
-            label: 'Favourites',
+            label: 'WishList',
           ),
         ],
       ),

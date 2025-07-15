@@ -1,5 +1,6 @@
 import 'package:capstone_mobile_app/core/shared/error/failure.dart';
 import 'package:capstone_mobile_app/features/home/data/datasources/wishlist_service.dart';
+import 'package:capstone_mobile_app/features/home/domain/model/movie_model.dart';
 import 'package:capstone_mobile_app/features/home/domain/model/wishlist_model.dart';
 import 'package:capstone_mobile_app/features/home/domain/repositories/wishlist_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -24,6 +25,20 @@ class WishlistRepositoryImpl extends WishlistRepository {
       }
     } catch (e) {
       return Left(Failure(exception: e, message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> addToWishList(MovieModel movie) async {
+    try {
+      final response = await wishListService.addWishList(movie);
+      if (response.success) {
+        return Right(true);
+      } else {
+        return Right(false);
+      }
+    } catch (e) {
+      return Left((Failure(exception: e, message: e.toString())));
     }
   }
 

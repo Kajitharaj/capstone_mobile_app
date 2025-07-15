@@ -1,5 +1,6 @@
 import 'package:capstone_mobile_app/core/services/http_api_client.dart';
 import 'package:capstone_mobile_app/core/shared/model/api_response_model.dart';
+import 'package:capstone_mobile_app/features/home/domain/model/movie_model.dart';
 
 class WishListService {
   final ApiClient apiClient;
@@ -24,6 +25,19 @@ class WishListService {
   Future<ApiResponseModel> deleteWishList(int? id) async {
     try {
       final json = await apiClient.authDelete('/wishlists/deleteWishList/$id');
+      final response = ApiResponseModel.fromJson(json);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ApiResponseModel> addWishList(MovieModel movie) async {
+    try {
+      final json = await apiClient.authPost(
+        '/wishlists/addWishList',
+        movie.toJson(),
+      );
       final response = ApiResponseModel.fromJson(json);
       return response;
     } catch (e) {

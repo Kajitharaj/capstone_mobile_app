@@ -16,9 +16,11 @@ import 'package:capstone_mobile_app/features/home/domain/repositories/wishlist_r
 import 'package:capstone_mobile_app/features/home/domain/usecases/add_to_wish_list_usecase.dart';
 import 'package:capstone_mobile_app/features/home/domain/usecases/delete_wish_list_usecase.dart';
 import 'package:capstone_mobile_app/features/home/domain/usecases/fetch_movies_usecase.dart';
+import 'package:capstone_mobile_app/features/home/domain/usecases/get_movie_detail_usecase.dart';
 import 'package:capstone_mobile_app/features/home/domain/usecases/get_wish_list_usecase.dart';
-import 'package:capstone_mobile_app/features/home/presentation/bloc/fav_bloc/bloc/fav_bloc.dart';
-import 'package:capstone_mobile_app/features/home/presentation/bloc/home_bloc/movie_bloc.dart';
+import 'package:capstone_mobile_app/features/home/presentation/bloc/fav_bloc/fav_bloc.dart';
+import 'package:capstone_mobile_app/features/home/presentation/bloc/home_bloc/home_bloc.dart';
+import 'package:capstone_mobile_app/features/home/presentation/bloc/movie_bloc/movie_details_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -68,6 +70,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => AddToWishListUsecase(sl()));
   sl.registerLazySingleton(() => GetWishListUsecase(sl()));
   sl.registerLazySingleton(() => DeleteWishListUsecase(sl()));
+  sl.registerLazySingleton(() => GetMovieDetailUsecase(sl()));
 
   // Bloc
   sl.registerFactory(
@@ -78,10 +81,13 @@ Future<void> init() async {
       checkAuthStatusUseCase: sl(),
     ),
   );
+  sl.registerFactory(() => HomeBloc(fetchMoviesUsecase: sl()));
   sl.registerFactory(
-    () => HomeBloc(fetchMoviesUsecase: sl(), addToWishListUsecase: sl()),
+    () => FavBloc(
+      deleteWishListUsecase: sl(),
+      getWishListUsecase: sl(),
+      addToWishListUsecase: sl(),
+    ),
   );
-  sl.registerFactory(
-    () => FavBloc(deleteWishListUsecase: sl(), getWishListUsecase: sl()),
-  );
+  sl.registerFactory(() => MovieDetailsBloc(getMovieDetailUsecase: sl()));
 }

@@ -9,7 +9,7 @@ class DeleteWishListUsecase {
   DeleteWishListUsecase(this.repository);
 
   Future<Either<Failure, bool>> call(WishListModel model) async {
-    final int? id = model.id;
+    final int? id = model.movie!.id;
     return await repository.deleteWishList(id);
   }
 }
