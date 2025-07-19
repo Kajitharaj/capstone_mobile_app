@@ -22,6 +22,7 @@ dependencies:
   dartz: ^0.10.1
   flutter_secure_storage: ^9.2.4
   palette_generator: ^0.3.3+7
+  flutter_dotenv: ^5.2.1
 
 
 dev_dependencies:
@@ -35,4 +36,6 @@ flutter:
   assets:
     - assets/images/
     - assets/images/icons/
+    - .env.dev
+    - .env.prod
 
