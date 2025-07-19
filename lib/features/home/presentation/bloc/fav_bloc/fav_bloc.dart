@@ -27,7 +27,6 @@ class FavBloc extends Bloc<FavEvent, FavState> {
     on<LoadFavList>(_onLoadFavList);
     on<AddToWishList>(_onAddToWishList);
     on<DeleteWishList>(_onDeleteWishList);
-    on<ResetFavList>(_onResetFavList);
   }
 
   FutureOr<void> _onLoadFavList(
@@ -60,7 +59,6 @@ class FavBloc extends Bloc<FavEvent, FavState> {
           );
         },
       );
-      emit(FavInitial());
     } catch (e) {
       emit(FavError(Failure(exception: e)));
     }
@@ -85,9 +83,5 @@ class FavBloc extends Bloc<FavEvent, FavState> {
     } catch (e) {
       emit(FavError(Failure(exception: e)));
     }
-  }
-
-  FutureOr<void> _onResetFavList(ResetFavList event, Emitter<FavState> emit) {
-    emit(FavInitial());
   }
 }

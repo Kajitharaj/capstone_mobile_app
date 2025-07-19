@@ -9,8 +9,6 @@ sealed class FavEvent extends Equatable {
 
 class LoadFavList extends FavEvent {}
 
-class ResetFavList extends FavEvent {}
-
 class AddToWishList extends FavEvent {
   final MovieModel movieModel;
 

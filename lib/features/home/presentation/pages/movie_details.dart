@@ -15,6 +15,11 @@ class MovieDetailsPage extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<MovieDetailsBloc, MovieDetailsState>(
         builder: (context, state) {
+          if (state is MovieDetailsInitial) {
+            context.read<MovieDetailsBloc>().add(
+              LoadMovieDetail(movieId: int.tryParse(movieId)),
+            );
+          }
           if (state is MovieDetailsLoading) {
             return Center(child: CircularProgressIndicator());
           }
