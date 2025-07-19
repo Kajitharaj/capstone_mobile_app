@@ -52,10 +52,7 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: RouteConstants.WISHLIST,
           builder: (context, state) {
-            return BlocProvider.value(
-              value: sl<FavBloc>()..add(LoadFavList()),
-              child: WishList(),
-            );
+            return WishList();
           },
         ),
       ],
