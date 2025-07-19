@@ -1,5 +1,6 @@
 // lib/core/di/service_locator.dart
 import 'package:capstone_mobile_app/core/services/secure_storage_service.dart';
+import 'package:capstone_mobile_app/core/util/env_util.dart';
 import 'package:capstone_mobile_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:capstone_mobile_app/features/auth/data/datasources/auth_service.dart';
 import 'package:capstone_mobile_app/features/auth/domain/repositories/auth_repository.dart';
@@ -34,10 +35,7 @@ Future<void> init() async {
 
   // Core
   sl.registerLazySingleton(
-    () => ApiClient(
-      baseUrl: 'http://192.168.8.104:8091/api/v1',
-      authLocalDataSource: sl(),
-    ),
+    () => ApiClient(baseUrl: EnvUtil.env!.apiUrl, authLocalDataSource: sl()),
   );
 
   //secure storage
